@@ -13,11 +13,11 @@ var form = layui.form
 var layer = layui.layer
 form.verify({
   username: [
-    /^\w{6,12}$/,'必须由字母、数字、下划线组成，<br/>并且长度为6到12位'
+    /^\w{5,12}$/,'必须由字母、数字、下划线组成，<br/>并且长度为5到12位'
        ] ,
 
   pwd: [
-    /^[\S]{6,12}$/,'密码必须6到12位，且不能出现空格'
+    /^[\S]{5,12}$/,'密码必须5到12位，且不能出现空格'
        ] ,
   repwd: function(value){
       var pwd=$(".reg-box [name=password]").val();
@@ -33,7 +33,7 @@ form.verify({
        var data = {username:$("#form_reg [name=username]").val(),
                    password:$("#form_reg [name=password]").val()}
        //使用ajxa提交表单
-       $.post("/user/hello",data,
+       $.post("/my/register",data,
                function(rep){
                  layer.msg(rep);
                  //模拟人的点击行为
@@ -45,10 +45,22 @@ form.verify({
     e.preventDefault();
     $.ajax({
       method: 'POST',
-      url: "/user/hello",
+      url: "/my/login",
       data: $(this).serialize(),
       success: function (response) {
-        layer.msg(response);
+        if(response.flag){
+          layer.msg(response.message);
+          if(!window.localStorage){
+            alert("您的浏览器版本太低，请更新后再使用！");
+          }else{
+            var storage = window.localStorage;
+            storage.Authorization=response.data;
+           // storage.setItem('token',response.data);
+            window.open('/index.html','_self');
+          }
+
+        }
+        layer.msg(response.message);
       }
     });
   });
