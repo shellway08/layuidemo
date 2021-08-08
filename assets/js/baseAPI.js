@@ -18,11 +18,12 @@ $.ajaxPrefilter(function(options){
 
     //全局统一挂载回调函数：
     options.complete=function(res){
-        console.log(res);
-        //1.强制清除token
-        localStorage.removeItem('Authorization');
-        //2.强制跳转回登陆页面
-        if(res.responseJSON.flag==false||res.responseJSON.code==10040||res.responseJSON.code==30020||res.responseJSON.code==30010){
+       // console.log(res);
+
+        if(res.responseJSON.flag==false&&res.responseJSON.code==30020){
+             //1.强制清除token
+            localStorage.removeItem('Authorization');
+            //2.强制跳转回登陆页面 res.responseJSON.flag==false||
             location.href='/login.html';
         }
     }

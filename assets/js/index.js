@@ -26,7 +26,8 @@ function getUserInfo(){
         //     token:storage.getItem('Authorization')||'',
         // },
         success: function (response) {
-            if(response.code==10020){
+           // console.log(response);
+            if(response.code==10040||response.code==30020){
                 return layui.layer.msg(response.message);
             }
             //调用renderAvatar渲染用户头像
